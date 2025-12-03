@@ -2,9 +2,10 @@
 #include <fstream>
 #include <string>
 #include <filesystem>
+#include <cstdlib>
 
 int main() {
-    std::ifstream file("/home/eliot/advent_of_code_2025/day1/src/input.txt");
+    std::ifstream file("/home/eliot/advent_of_code_2025/day1B/src/input.txt");
 
     std::cout << "Current working dir: "
           << std::filesystem::current_path() << "\n";
@@ -28,24 +29,28 @@ int main() {
         if (line.empty()) continue;
 
         char direction = line[0];                 
-        int32_t value = std::stoi(line.substr(1));  
+        int32_t value = std::stoi(line.substr(1));
         
         std::cout << "Direction: " << direction
                   << ", Value: " << value << "\n";
                   
         if (direction == 'R') {
             if (value >= lock_size - position) {
-                position = (position + value) % lock_size;
+                std::div_t div_result = std::div(position + value, lock_size);
+                value_counter += div_result.quot;
+                position = div_result.rem;
             } else {
                 position += value;
             }
         } else if (direction == 'L') {
             if (value > position) {
                 int32_t scaled_value = value - position;
-                if (scaled_value % lock_size == 0) {
+                std::div_t div_result = std::div(scaled_value, lock_size);
+                value_counter += div_result.quot;
+                if (div_result.quot == 0) {
                     position = 0;
                 } else {
-                    position = lock_size - (scaled_value % lock_size);
+                    position = lock_size - div_result.rem;
                 }
             } else {
                 position -= value;

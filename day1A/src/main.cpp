@@ -4,7 +4,7 @@
 #include <filesystem>
 
 int main() {
-    std::ifstream file("/home/eliot/advent_of_code_2025/day1/src/input.txt");
+    std::ifstream file("/home/eliot/advent_of_code_2025/day1A/src/input.txt");
 
     std::cout << "Current working dir: "
           << std::filesystem::current_path() << "\n";
